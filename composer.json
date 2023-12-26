@@ -1,23 +1,48 @@
 {
-    "name": "ambta/doctrine-encrypt-bundle",
-    "type": "library",
-    "keywords": ["doctrine", "symfony", "aes256", "rijndael", "encrypt", "decrypt"],
-    "license": "MIT",
-    "description": "Symfony 2 bundle which allows to encrypt data in database with some encrypt algorithm",
-    "require": {
-        "php": ">=5.6",
-        "symfony/framework-bundle": ">=2.5",
-        "doctrine/orm": ">=2.5",
-        "ext-openssl": "*"
-    },
-    "autoload": {
-        "psr-0": { "Ambta\\DoctrineEncryptBundle": "" }
-    },
-    "target-dir": "Ambta/DoctrineEncryptBundle",
-    "authors": [
+	"name": "hec-franco/doctrine-encrypt-bundle",
+	"type": "library",
+	"keywords": ["doctrine", "symfony", "halite", "defuse", "encrypt", "decrypt"],
+	"license": "MIT",
+	"description": "Encrypted symfony entity's by verified and standardized libraries",
+	"require": {
+		"php": "^8.0",
+		"paragonie/halite": "^4.6",
+		"paragonie/sodium_compat": "^1.5",
+		"doctrine/orm": "^2.5",
+		"symfony/property-access": "^4.1|^5.0|^6.0|^7.0",
+		"symfony/dependency-injection": "^4.1|^5.0|^6.0|^7.0",
+		"symfony/yaml": "^4.1|^5.0|^6.0|^7.0",
+		"symfony/http-kernel": "^4.1|^5.0|^6.0|^7.0",
+		"symfony/config": "^4.1|^5.0|^6.0|^7.0",
+		"absolute-quantum/doctrine-encrypt-bundle": "^4.1|^5.0|^6.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^8.0|^9.0",
+		"defuse/php-encryption": "^2.1"
+	},
+	"suggest": {
+		"defuse/php-encryption": "Alternative for halite for use with older php-versions",
+		"ext-sodium": "Required to use halite encryption library."
+	},
+	"repositories": [
         {
-            "name": "Marcel van Nuil",
-            "email": "marcel@ambta.com"
+            "type": "vcs",
+            "url": "https://github.com/absolute-quantum/doctrine-encrypt-bundle"
         }
-    ]
+    ],
+	"autoload": {
+		"psr-4": {
+			"Ambta\\DoctrineEncryptBundle\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Ambta\\DoctrineEncryptBundle\\Tests\\": "Tests/"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/package-versions-deprecated": true
+		}
+	}
 }
