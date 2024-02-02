@@ -3,7 +3,7 @@
 	"type": "library",
 	"keywords": ["doctrine", "symfony", "halite", "defuse", "encrypt", "decrypt"],
 	"license": "MIT",
-	"description": "Encrypted symfony entity's by verified and standardized libraries",
+	"description": "Encrypted symfony 6|7 entity's by verified and standardized libraries",
 	"require": {
 		"php": "^8.0",
 		"paragonie/halite": "^5.1",
