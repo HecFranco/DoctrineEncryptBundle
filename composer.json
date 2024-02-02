@@ -25,12 +25,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Ambta\\DoctrineEncryptBundle\\": "src/"
+			"Core\\DoctrineEncryptBundle\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Ambta\\DoctrineEncryptBundle\\Tests\\": "Tests/"
+			"Core\\DoctrineEncryptBundle\\Tests\\": "Tests/"
 		}
 	},
 	"config": {
