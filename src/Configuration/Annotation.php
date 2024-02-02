@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ambta\DoctrineEncryptBundle\Configuration;
+namespace Core\DoctrineEncryptBundle\Configuration;
 
 /**
  * @internal

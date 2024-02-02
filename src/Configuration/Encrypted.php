@@ -1,6 +1,6 @@
 <?php
 
-namespace Ambta\DoctrineEncryptBundle\Configuration;
+namespace Core\DoctrineEncryptBundle\Configuration;
 
 use Attribute;
 

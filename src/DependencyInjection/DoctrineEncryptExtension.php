@@ -1,7 +1,9 @@
 <?php
 
-namespace Ambta\DoctrineEncryptBundle\DependencyInjection;
+namespace Core\DoctrineEncryptBundle\DependencyInjection;
 
+use Core\DoctrineEncryptBundle\Encryptors\DefuseEncryptor;
+use Core\DoctrineEncryptBundle\Encryptors\HaliteEncryptor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -16,43 +18,50 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class DoctrineEncryptExtension extends Extension
 {
-    const SupportedEncryptorClasses = array(
-        'Defuse' => 'Ambta\DoctrineEncryptBundle\Encryptors\DefuseEncryptor',
-        'Halite' => 'Ambta\DoctrineEncryptBundle\Encryptors\HaliteEncryptor',
-    );
+  const SupportedEncryptorClasses = [
+    'Defuse' => DefuseEncryptor::class, // 'Core\DoctrineEncryptBundle\Encryptors\DefuseEncryptor',
+    'Halite' => HaliteEncryptor::class, // 'Core\DoctrineEncryptBundle\Encryptors\HaliteEncryptor',
+  ];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
-    {
-        // Create configuration object
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+  /**
+   * This function loads the configuration, sets parameters, and loads a service file in a PHP
+   * application.
+   * 
+   * @param array configs An array of configuration values passed to the load() method.
+   * @param ContainerBuilder container The `` parameter is an instance of the
+   * `ContainerBuilder` class. It is used to manage and store service definitions, parameters, and other
+   * configuration settings for the application.
+   */
+  public function load(array $configs, ContainerBuilder $container): void
+  {
+    // Create configuration object
+    $configuration = new Configuration();
+    $config = $this->processConfiguration($configuration, $configs);
 
-        // If empty encryptor class, use Halite encryptor
-        if (in_array($config['encryptor_class'], array_keys(self::SupportedEncryptorClasses))) {
-            $config['encryptor_class_full'] = self::SupportedEncryptorClasses[$config['encryptor_class']];
-        } else {
-            $config['encryptor_class_full'] = $config['encryptor_class'];
-        }
-
-        // Set parameters
-        $container->setParameter('ambta_doctrine_encrypt.encryptor_class_name', $config['encryptor_class_full']);
-        $container->setParameter('ambta_doctrine_encrypt.secret_key_path',$config['secret_directory_path'].'/.'.$config['encryptor_class'].'.key');
-
-        // Load service file
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
+    // If empty encryptor class, use Halite encryptor
+    if (in_array($config['encryptor_class'], array_keys(self::SupportedEncryptorClasses))) {
+      $config['encryptor_class_full'] = self::SupportedEncryptorClasses[$config['encryptor_class']];
+    } else {
+      $config['encryptor_class_full'] = $config['encryptor_class'];
     }
 
-    /**
-     * Get alias for configuration
-     *
-     * @return string
-     */
-    public function getAlias(): string
-    {
-        return 'ambta_doctrine_encrypt';
-    }
+    // Set parameters
+    $container->setParameter('core_doctrine_encrypt.encryptor_class_name', $config['encryptor_class_full']);
+    $secretKeyPath = $config['secret_directory_path'] . '/.' . $config['encryptor_class'] . '.key';
+    $container->setParameter('core_doctrine_encrypt.secret_key_path', $secretKeyPath);
+
+    // Load service file
+    $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+    $loader->load('services.yml');
+  }
+
+  /**
+   * Get alias for configuration
+   *
+   * @return string
+   */
+  public function getAlias(): string
+  {
+    return Configuration::ALIAS;
+  }
 }

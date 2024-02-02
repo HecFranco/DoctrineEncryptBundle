@@ -1,22 +1,28 @@
 <?php
 
-namespace Ambta\DoctrineEncryptBundle\Subscribers;
+namespace Core\DoctrineEncryptBundle\Subscribers;
 
-use Doctrine\ORM\Event\PreFlushEventArgs;
-use ReflectionClass;
-use Doctrine\ORM\Event\PostFlushEventArgs;
-use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
+// events
+use Doctrine\ORM\Events;
+//
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
-use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Util\ClassUtils;
-use Ambta\DoctrineEncryptBundle\Encryptors\EncryptorInterface;
 use Doctrine\ORM\Event\PostLoadEventArgs;
-use ReflectionProperty;
+use Doctrine\ORM\Event\OnFlushEventArgs;
+// utils
+use Doctrine\Common\Util\ClassUtils;
+//
+use Core\DoctrineEncryptBundle\Configuration\Encrypted;
+// encryptorInterface
+use Core\DoctrineEncryptBundle\Encryptors\EncryptorInterface;
+// property access
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use ReflectionProperty;
+use ReflectionClass;
 // attributes
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 
@@ -39,18 +45,12 @@ class DoctrineEncryptSubscriber /*implements EventSubscriber*/
   /**
    * Encryptor interface namespace
    */
-  const ENCRYPTOR_INTERFACE_NS = 'Ambta\DoctrineEncryptBundle\Encryptors\EncryptorInterface';
+  const ENCRYPTOR_INTERFACE_NS = EncryptorInterface::class;// 'Core\DoctrineEncryptBundle\Encryptors\EncryptorInterface';
 
   /**
    * Encrypted annotation full name
    */
-  const ENCRYPTED_ANN_NAME = 'Ambta\DoctrineEncryptBundle\Configuration\Encrypted';
-
-  /**
-   * Encryptor
-   * @var EncryptorInterface|null
-   */
-  private ?EncryptorInterface $encryptor;
+  const ENCRYPTED_ANN_NAME = Encrypted::class;// 'Core\DoctrineEncryptBundle\Configuration\Encrypted';
 
   /**
    * Used for restoring the encryptor after changing it
@@ -78,11 +78,24 @@ class DoctrineEncryptSubscriber /*implements EventSubscriber*/
    *
    * @param EncryptorInterface $encryptor (Optional)  An EncryptorInterface.
    */
-  public function __construct(EncryptorInterface $encryptor)
+  public function __construct(public EncryptorInterface $encryptor)
   {
-    $this->encryptor = $encryptor;
     $this->restoreEncryptor = $this->encryptor;
   }
+
+  /*
+  public function getSubscribedEvents(): array
+  {
+    return array(
+      Events::postUpdate,
+      Events::preUpdate,
+      Events::postLoad,
+      Events::onFlush,
+      Events::preFlush,
+      Events::postFlush,
+    );
+  }
+  */
 
   /**
    * Change the encryptor
@@ -203,23 +216,6 @@ class DoctrineEncryptSubscriber /*implements EventSubscriber*/
         $this->processFields($entity, false);
       }
     }
-  }
-
-  /**
-   * Realization of EventSubscriber interface method.
-   *
-   * @return array Return all events which this subscriber is listening
-   */
-  public function getSubscribedEvents(): array
-  {
-    return array(
-      Events::postUpdate,
-      Events::preUpdate,
-      Events::postLoad,
-      Events::onFlush,
-      Events::preFlush,
-      Events::postFlush,
-    );
   }
 
   /**

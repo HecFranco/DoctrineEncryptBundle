@@ -1,13 +1,13 @@
 <?php
 
-namespace Ambta\DoctrineEncryptBundle;
+namespace Core\DoctrineEncryptBundle;
 
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Ambta\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
+use Core\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
 
-class AmbtaDoctrineEncryptBundle extends Bundle
+class CoreDoctrineEncryptBundle extends Bundle
 {
     #[Pure]
     public function getContainerExtension(): ?ExtensionInterface

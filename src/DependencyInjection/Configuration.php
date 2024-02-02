@@ -1,6 +1,6 @@
 <?php
 
-namespace Ambta\DoctrineEncryptBundle\DependencyInjection;
+namespace Core\DoctrineEncryptBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -14,33 +14,34 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+  public const ALIAS = 'core_doctrine_encrypt';
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getConfigTreeBuilder(): TreeBuilder
-    {
-        // Create tree builder
-        $treeBuilder = new TreeBuilder('ambta_doctrine_encrypt');
-        if (\method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $rootNode = $treeBuilder->root('ambta_doctrine_encrypt');
-        }
-
-        // Grammar of config tree
-        $rootNode
-                ->children()
-                    ->scalarNode('encryptor_class')
-                        ->defaultValue('Halite')
-                    ->end()
-                    ->scalarNode('secret_directory_path')
-                        ->defaultValue('%kernel.project_dir%')
-                    ->end()
-                ->end();
-
-        return $treeBuilder;
+  /**
+   * The getConfigTreeBuilder function creates a config tree builder for a PHP application, with default
+   * values for encryptor_class and secret_directory_path.
+   * 
+   * @return TreeBuilder The `TreeBuilder` object is being returned.
+   */
+  public function getConfigTreeBuilder(): TreeBuilder
+  {
+    // Create tree builder
+    $treeBuilder = new TreeBuilder(self::ALIAS);
+    if (\method_exists($treeBuilder, 'getRootNode')) {
+      $rootNode = $treeBuilder->getRootNode();
+    } else {
+      // BC layer for symfony/config 4.1 and older
+      $rootNode = $treeBuilder->root(self::ALIAS);
     }
 
+    // Grammar of config tree
+    $rootNode
+      ->children()
+      ->scalarNode('encryptor_class')->defaultValue('Halite')
+      ->end()
+      ->scalarNode('secret_directory_path')->defaultValue('%kernel.project_dir%')
+      ->end()
+      ->end();
+    //
+    return $treeBuilder;
+  }
 }

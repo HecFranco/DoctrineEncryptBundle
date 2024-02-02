@@ -1,58 +1,60 @@
 <?php
 
-namespace Ambta\DoctrineEncryptBundle\Command;
+namespace Core\DoctrineEncryptBundle\Command;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+// attributes
+use Symfony\Component\Console\Attribute\AsCommand;
 
-/**
- * Get status of doctrine encrypt bundle and the database.
- *
- * @author Marcel van Nuil <marcel@ambta.com>
- * @author Michael Feinbier <michael@feinbier.net>
- */
+#[AsCommand(
+  name: 'doctrine:encrypt:status',
+  description: 'Get status of doctrine encrypt bundle and the database',
+  hidden: false,
+  aliases: ['doctrine:encrypt:status']
+)]
 class DoctrineEncryptStatusCommand extends AbstractCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('doctrine:encrypt:status')
-            ->setDescription('Get status of doctrine encrypt bundle and the database');
+
+  /**
+   * This PHP function retrieves metadata for entities and counts the number of encrypted properties in
+   * each entity.
+   * 
+   * @param InputInterface input The `` parameter is an instance of the `InputInterface` class. It
+   * represents the input arguments and options provided by the user when executing the command.
+   * @param OutputInterface output The `` parameter is an instance of the `OutputInterface` class.
+   * It is used to write output messages to the console or other output streams.
+   * 
+   * @return int The method is returning an integer value. In this case, it is returning the constant
+   * value `AbstractCommand::SUCCESS`, which typically indicates a successful execution of the command.
+   */
+  protected function execute(InputInterface $input, OutputInterface $output): int
+  {
+    $metaDataArray = $this->entityManager->getMetadataFactory()->getAllMetadata();
+
+    $totalCount = 0;
+    foreach ($metaDataArray as $metaData) {
+      if ($metaData instanceof ClassMetadataInfo  and $metaData->isMappedSuperclass) {
+        continue;
+      }
+
+      $count = 0;
+      $encryptedPropertiesCount = count($this->getEncryptionableProperties($metaData));
+      if ($encryptedPropertiesCount > 0) {
+        $totalCount += $encryptedPropertiesCount;
+        $count += $encryptedPropertiesCount;
+      }
+
+      if ($count > 0) {
+        $output->writeln(sprintf('<info>%s</info> has <info>%d</info> properties which are encrypted.', $metaData->name, $count));
+      } else {
+        $output->writeln(sprintf('<info>%s</info> has no properties which are encrypted.', $metaData->name));
+      }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $metaDataArray = $this->entityManager->getMetadataFactory()->getAllMetadata();
-
-        $totalCount = 0;
-        foreach ($metaDataArray as $metaData) {
-            if ($metaData instanceof ClassMetadataInfo  and $metaData->isMappedSuperclass) {
-                continue;
-            }
-
-            $count = 0;
-            $encryptedPropertiesCount = count($this->getEncryptionableProperties($metaData));
-            if ($encryptedPropertiesCount > 0) {
-                $totalCount += $encryptedPropertiesCount;
-                $count += $encryptedPropertiesCount;
-            }
-
-            if ($count > 0) {
-                $output->writeln(sprintf('<info>%s</info> has <info>%d</info> properties which are encrypted.', $metaData->name, $count));
-            } else {
-                $output->writeln(sprintf('<info>%s</info> has no properties which are encrypted.', $metaData->name));
-            }
-        }
-
-        $output->writeln('');
-        $output->writeln(sprintf('<info>%d</info> entities found which are containing <info>%d</info> encrypted properties.', count($metaDataArray), $totalCount));
-        return 1;
-    }
+    $output->writeln('');
+    $output->writeln(sprintf('<info>%d</info> entities found which are containing <info>%d</info> encrypted properties.', count($metaDataArray), $totalCount));
+    return AbstractCommand::SUCCESS;
+  }
 }
