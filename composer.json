@@ -23,12 +23,6 @@
 		"defuse/php-encryption": "Alternative for halite for use with older php-versions",
 		"ext-sodium": "Required to use halite encryption library."
 	},
-	"repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/absolute-quantum/doctrine-encrypt-bundle"
-        }
-    ],
 	"autoload": {
 		"psr-4": {
 			"Ambta\\DoctrineEncryptBundle\\": "src/"
