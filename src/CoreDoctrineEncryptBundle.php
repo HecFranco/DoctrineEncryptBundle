@@ -9,9 +9,9 @@ use Core\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
 
 class CoreDoctrineEncryptBundle extends Bundle
 {
-    #[Pure]
-    public function getContainerExtension(): ?ExtensionInterface
-    {
-        return new DoctrineEncryptExtension();
-    }
+  #[Pure]
+  public function getContainerExtension(): ?ExtensionInterface
+  {
+    return new DoctrineEncryptExtension();
+  }
 }
