@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\DoctrineEncryptBundle\Command;
+namespace Ambta\DoctrineEncryptBundle\Command;
 
-use Core\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
+use Ambta\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,6 +11,10 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 // attributes
 use Symfony\Component\Console\Attribute\AsCommand;
 
+/* 
+ * The DoctrineEncryptDatabaseCommand class is a PHP command that encrypts fields in a database using a
+ * specified encryptor. 
+ **/
 #[AsCommand(
   name: 'doctrine:encrypt:database',
   description: 'Encrypt whole database on tables which are not encrypted yet',
@@ -49,7 +53,7 @@ class DoctrineEncryptDatabaseCommand extends AbstractCommand
     $batchSize = $input->getArgument('batchSize');
 
     // Get list of supported encryptors
-    $supportedExtensions = DoctrineEncryptExtension::SupportedEncryptorClasses;
+    $supportedExtensions = DoctrineEncryptExtension::SUPPORTED_ENCRYPTOR_CLASSES;
 
     // If encryptor has been set use that encryptor else use default
     if ($input->getArgument('encryptor')) {

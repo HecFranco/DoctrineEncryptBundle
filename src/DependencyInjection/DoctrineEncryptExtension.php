@@ -1,9 +1,9 @@
 <?php
 
-namespace Core\DoctrineEncryptBundle\DependencyInjection;
+namespace Ambta\DoctrineEncryptBundle\DependencyInjection;
 
-use Core\DoctrineEncryptBundle\Encryptors\DefuseEncryptor;
-use Core\DoctrineEncryptBundle\Encryptors\HaliteEncryptor;
+use Ambta\DoctrineEncryptBundle\Encryptors\DefuseEncryptor;
+use Ambta\DoctrineEncryptBundle\Encryptors\HaliteEncryptor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -18,9 +18,9 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class DoctrineEncryptExtension extends Extension
 {
-  const SupportedEncryptorClasses = [
-    'Defuse' => DefuseEncryptor::class, // 'Core\DoctrineEncryptBundle\Encryptors\DefuseEncryptor',
-    'Halite' => HaliteEncryptor::class, // 'Core\DoctrineEncryptBundle\Encryptors\HaliteEncryptor',
+  const SUPPORTED_ENCRYPTOR_CLASSES = [
+    'Defuse' => DefuseEncryptor::class, // 'Ambta\DoctrineEncryptBundle\Encryptors\DefuseEncryptor',
+    'Halite' => HaliteEncryptor::class, // 'Ambta\DoctrineEncryptBundle\Encryptors\HaliteEncryptor',
   ];
 
   /**
@@ -39,18 +39,23 @@ class DoctrineEncryptExtension extends Extension
     $config = $this->processConfiguration($configuration, $configs);
 
     // If empty encryptor class, use Halite encryptor
-    if (in_array($config['encryptor_class'], array_keys(self::SupportedEncryptorClasses))) {
-      $config['encryptor_class_full'] = self::SupportedEncryptorClasses[$config['encryptor_class']];
+    if (in_array($config['encryptor_class'], array_keys(self::SUPPORTED_ENCRYPTOR_CLASSES))) {
+      $config['encryptor_class_full'] = self::SUPPORTED_ENCRYPTOR_CLASSES[$config['encryptor_class']];
     } else {
       $config['encryptor_class_full'] = $config['encryptor_class'];
     }
 
-    // Set parameters
-    $container->setParameter('core_doctrine_encrypt.encryptor_class_name', $config['encryptor_class_full']);
+    // The code is setting parameters in the Symfony container.
+    $container->setParameter('ambta_doctrine_encrypt.encryptor_class_name', $config['encryptor_class_full']);
     $secretKeyPath = $config['secret_directory_path'] . '/.' . $config['encryptor_class'] . '.key';
-    $container->setParameter('core_doctrine_encrypt.secret_key_path', $secretKeyPath);
+    $container->setParameter('ambta_doctrine_encrypt.secret_key_path', $secretKeyPath);
 
-    // Load service file
+    /* 
+     * The code is creating a new instance of the YamlFileLoader class, which is responsible for loading
+     * service definitions from a YAML file. It takes two parameters: $container, which is an instance of
+     * the ContainerBuilder class and is used to manage and store service definitions, and new
+     * FileLocator(__DIR__ . '/../Resources/config'), which is used to locate the YAML file. 
+     **/
     $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
     $loader->load('services.yml');
   }

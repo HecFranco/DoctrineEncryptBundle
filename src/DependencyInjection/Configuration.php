@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\DoctrineEncryptBundle\DependencyInjection;
+namespace Ambta\DoctrineEncryptBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-  public const ALIAS = 'core_doctrine_encrypt';
+  public const ALIAS = 'ambta_doctrine_encrypt';
 
   /**
    * The getConfigTreeBuilder function creates a config tree builder for a PHP application, with default

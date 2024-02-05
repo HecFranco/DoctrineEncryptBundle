@@ -1,18 +1,21 @@
 <?php
 
-namespace Core\DoctrineEncryptBundle\Command;
+namespace Ambta\DoctrineEncryptBundle\Command;
 
-use Core\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
+use Ambta\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-
 // attributes
 use Symfony\Component\Console\Attribute\AsCommand;
 
+/* 
+ * The DoctrineDecryptDatabaseCommand class is a PHP command that decrypts all fields in a database
+ * using an encryptor specified by the user. 
+ **/
 #[AsCommand(
   name: 'doctrine:decrypt:database',
   description: 'Decrypt whole database on tables which are encrypted',
@@ -21,7 +24,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 )]
 class DoctrineDecryptDatabaseCommand extends AbstractCommand
 {
-
 
   /**
    * The function "configure" is used to set up command line arguments for a PHP script.
@@ -51,7 +53,7 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
     $question = $this->getHelper('question');
 
     // Get list of supported encryptors
-    $supportedExtensions = DoctrineEncryptExtension::SupportedEncryptorClasses;
+    $supportedExtensions = DoctrineEncryptExtension::SUPPORTED_ENCRYPTOR_CLASSES;
     $batchSize = $input->getArgument('batchSize');
 
     // If encryptor has been set use that encryptor else use default

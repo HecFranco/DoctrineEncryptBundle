@@ -1,10 +1,10 @@
 <?php
 
-namespace Core\DoctrineEncryptBundle\Command;
+namespace Ambta\DoctrineEncryptBundle\Command;
 
-use Core\DoctrineEncryptBundle\Configuration\Encrypted;
-use Core\DoctrineEncryptBundle\Mapping\AttributeReader;
-use Core\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
+use Ambta\DoctrineEncryptBundle\Mapping\AttributeReader;
+use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -107,7 +107,7 @@ abstract class AbstractCommand extends Command
     $propertyArray = $reflectionClass->getProperties();
     $properties = [];
     foreach ($propertyArray as $property) {
-      if ($this->attributeReader->getPropertyAnnotation($property, Encrypted::class/*'Core\DoctrineEncryptBundle\Configuration\Encrypted'*/)) {
+      if ($this->attributeReader->getPropertyAnnotation($property, Encrypted::class/*'Ambta\DoctrineEncryptBundle\Configuration\Encrypted'*/)) {
         $properties[] = $property;
       }
     }

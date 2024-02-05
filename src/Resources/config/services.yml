@@ -3,70 +3,74 @@ services:
     autowire: true    # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  Core\DoctrineEncryptBundle\Subscribers\:
+  Ambta\DoctrineEncryptBundle\Subscribers\:
     resource: '../../Subscribers/*'
 
-  core_doctrine_attribute_reader:
-    class: Core\DoctrineEncryptBundle\Mapping\AttributeReader
+  ambta_doctrine_attribute_reader:
+    class: Ambta\DoctrineEncryptBundle\Mapping\AttributeReader
 
-  core_doctrine_encrypt.orm_subscriber:
-    class: Core\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber
-    # arguments: ["@core_doctrine_attribute_reader", "@core_doctrine_encrypt.encryptor"]
-    arguments: ["@core_doctrine_encrypt.encryptor"]
-    #tags:
-    #  -  { name: doctrine.event_subscriber }
-    tags:
-    -
-      name: 'doctrine.event_listener'
-      # this is the only required option for the lifecycle listener tag
-      event: 'postUpdate'
-      # listeners can define their priority in case listeners are associated
-      # to the same event (default priority = 0; higher numbers = listener is run earlier)
-      priority: 500
-      # you can also restrict listeners to a specific Doctrine connection
-      connection: 'default'
-    - { name: 'doctrine.event_listener', event: 'preUpdate', priority: 500, connection: 'default' }
-    - { name: 'doctrine.event_listener', event: 'postLoad', priority: 500, connection: 'default' }
-    - { name: 'doctrine.event_listener', event: 'onFlush', priority: 500, connection: 'default' }
-    - { name: 'doctrine.event_listener', event: 'preFlush', priority: 500, connection: 'default' }
-    - { name: 'doctrine.event_listener', event: 'postFlush', priority: 500, connection: 'default' }
+  #ambta_doctrine_encrypt.orm_subscriber:
+  #  class: Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber
+  #  # arguments: ["@ambta_doctrine_attribute_reader", "@ambta_doctrine_encrypt.encryptor"]
+  #  arguments: ["@ambta_doctrine_encrypt.encryptor"]
+  #  #tags:
+  #  #  -  { name: doctrine.event_subscriber }
+  #  tags:
+  #  -
+  #    name: 'doctrine.event_listener'
+  #    # this is the only required option for the lifecycle listener tag
+  #    event: 'postUpdate'
+  #    # listeners can define their priority in case listeners are associated
+  #    # to the same event (default priority = 0; higher numbers = listener is run earlier)
+  #    priority: 500
+  #    # you can also restrict listeners to a specific Doctrine connection
+  #    connection: 'default'
+  #  - { name: 'doctrine.event_listener', event: 'preUpdate', priority: 500, connection: 'default' }
+  #  - { name: 'doctrine.event_listener', event: 'postLoad', priority: 500, connection: 'default' }
+  #  - { name: 'doctrine.event_listener', event: 'onFlush', priority: 500, connection: 'default' }
+  #  - { name: 'doctrine.event_listener', event: 'preFlush', priority: 500, connection: 'default' }
+  #  - { name: 'doctrine.event_listener', event: 'postFlush', priority: 500, connection: 'default' }
 
-  core_doctrine_encrypt.encryptor:
-    class: "%core_doctrine_encrypt.encryptor_class_name%"
+  ambta_doctrine_encrypt.encryptor:
+    class: "%ambta_doctrine_encrypt.encryptor_class_name%"
     arguments:
-      - "%core_doctrine_encrypt.secret_key_path%"
+      - "%ambta_doctrine_encrypt.secret_key_path%"
 
-  core_doctrine_encrypt.subscriber:
-    alias: core_doctrine_encrypt.orm_subscriber
+  #ambta_doctrine_encrypt.subscriber:
+  #  alias: ambta_doctrine_encrypt.orm_subscriber
 
-  core_doctrine_encrypt.command.decrypt.database:
-    class: Core\DoctrineEncryptBundle\Command\DoctrineDecryptDatabaseCommand
+  ambta_doctrine_encrypt.command.decrypt.database:
+    class: Ambta\DoctrineEncryptBundle\Command\DoctrineDecryptDatabaseCommand
     tags: ['console.command']
-    arguments:
-      - "@doctrine.orm.entity_manager"
-      - "@core_doctrine_attribute_reader"
-      - "@core_doctrine_encrypt.subscriber"
+    autowire: true
+    #arguments:
+    #  - "@doctrine.orm.entity_manager"
+    #  - "@ambta_doctrine_attribute_reader"
+    #  - "@ambta_doctrine_encrypt.subscriber"
 
-  core_doctrine_encrypt.command.encrypt.database:
-    class: Core\DoctrineEncryptBundle\Command\DoctrineEncryptDatabaseCommand
+  ambta_doctrine_encrypt.command.encrypt.database:
+    class: Ambta\DoctrineEncryptBundle\Command\DoctrineEncryptDatabaseCommand
     tags: ['console.command']
-    arguments:
-      - "@doctrine.orm.entity_manager"
-      - "@core_doctrine_attribute_reader"
-      - "@core_doctrine_encrypt.subscriber"
+    autowire: true
+    #arguments:
+    #  - "@doctrine.orm.entity_manager"
+    #  - "@ambta_doctrine_attribute_reader"
+    #  - "@ambta_doctrine_encrypt.subscriber"
 
-  core_doctrine_encrypt.command.encrypt.status:
-    class: Core\DoctrineEncryptBundle\Command\DoctrineEncryptStatusCommand
+  ambta_doctrine_encrypt.command.encrypt.status:
+    class: Ambta\DoctrineEncryptBundle\Command\DoctrineEncryptStatusCommand
     tags: ['console.command']
-    arguments:
-      - "@doctrine.orm.entity_manager"
-      - "@core_doctrine_attribute_reader"
-      - "@core_doctrine_encrypt.subscriber"
+    autowire: true
+    #arguments:
+    #  - "@doctrine.orm.entity_manager"
+    #  - "@ambta_doctrine_attribute_reader"
+    #  - "@ambta_doctrine_encrypt.subscriber"
 
-  core_doctrine_encrypt.command.encrypt.generate_secret_key:
-    class: Core\DoctrineEncryptBundle\Command\GenerateSecretKeyCommand
+  ambta_doctrine_encrypt.command.encrypt.generate_secret_key:
+    class: Ambta\DoctrineEncryptBundle\Command\GenerateSecretKeyCommand
     tags: ['console.command']
-    arguments:
-      - "@doctrine.orm.entity_manager"
-      - "@core_doctrine_attribute_reader"
-      - "@core_doctrine_encrypt.subscriber"
+    autowire: true
+    #arguments:
+    #  - "@doctrine.orm.entity_manager"
+    #  - "@ambta_doctrine_attribute_reader"
+    #  - "@ambta_doctrine_encrypt.subscriber"

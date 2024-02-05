@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\DoctrineEncryptBundle\Command;
+namespace Ambta\DoctrineEncryptBundle\Command;
 
-use Core\DoctrineEncryptBundle\Encryptors\HaliteEncryptor;
+use Ambta\DoctrineEncryptBundle\Encryptors\HaliteEncryptor;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,6 +11,10 @@ use ParagonIE\Halite\KeyFactory;
 // attributes
 use Symfony\Component\Console\Attribute\AsCommand;
 
+/* 
+ * The GenerateSecretKeyCommand class checks the type of encryptor used and generates and saves an
+ * encryption key if it is a HaliteEncryptor. 
+ **/
 #[AsCommand(
   name: 'doctrine:encrypt:generate-secret-key',
   description: 'Get status of doctrine encrypt bundle and the database',

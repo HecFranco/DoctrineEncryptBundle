@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\DoctrineEncryptBundle\Command;
+namespace Ambta\DoctrineEncryptBundle\Command;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,6 +8,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 // attributes
 use Symfony\Component\Console\Attribute\AsCommand;
 
+/* 
+ * The DoctrineEncryptStatusCommand class retrieves metadata for entities and counts the number of
+ * encrypted properties in each entity. 
+ **/
 #[AsCommand(
   name: 'doctrine:encrypt:status',
   description: 'Get status of doctrine encrypt bundle and the database',

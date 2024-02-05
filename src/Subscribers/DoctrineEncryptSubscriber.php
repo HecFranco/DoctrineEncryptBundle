@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\DoctrineEncryptBundle\Subscribers;
+namespace Ambta\DoctrineEncryptBundle\Subscribers;
 
-use Doctrine\Common\EventSubscriber;
+// use Doctrine\Common\EventSubscriber;
 // events
 use Doctrine\ORM\Events;
 //
@@ -16,9 +16,9 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 // utils
 use Doctrine\Common\Util\ClassUtils;
 //
-use Core\DoctrineEncryptBundle\Configuration\Encrypted;
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 // encryptorInterface
-use Core\DoctrineEncryptBundle\Encryptors\EncryptorInterface;
+use Ambta\DoctrineEncryptBundle\Encryptors\EncryptorInterface;
 // property access
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use ReflectionProperty;
@@ -45,12 +45,12 @@ class DoctrineEncryptSubscriber /*implements EventSubscriber*/
   /**
    * Encryptor interface namespace
    */
-  const ENCRYPTOR_INTERFACE_NS = EncryptorInterface::class;// 'Core\DoctrineEncryptBundle\Encryptors\EncryptorInterface';
+  const ENCRYPTOR_INTERFACE_NS = EncryptorInterface::class;// 'Ambta\DoctrineEncryptBundle\Encryptors\EncryptorInterface';
 
   /**
    * Encrypted annotation full name
    */
-  const ENCRYPTED_ANN_NAME = Encrypted::class;// 'Core\DoctrineEncryptBundle\Configuration\Encrypted';
+  const ENCRYPTED_ANN_NAME = Encrypted::class;// 'Ambta\DoctrineEncryptBundle\Configuration\Encrypted';
 
   /**
    * Used for restoring the encryptor after changing it
